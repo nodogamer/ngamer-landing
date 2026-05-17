@@ -751,6 +751,12 @@ ul { list-style: none; }
   margin: 0 auto 1.5rem;
 }
 
+.gracias-icon--error {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
 .gracias-title {
   font-family: var(--font-heading), 'Exo 2', sans-serif;
   font-weight: 700;
