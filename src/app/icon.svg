@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Hexagon -->
+  <polygon
+    points="20,2 35.6,11 35.6,29 20,38 4.4,29 4.4,11"
+    stroke="#00dc82"
+    stroke-width="1.8"
+    fill="rgba(0,220,130,0.07)"
+  />
+  <!-- Connection lines -->
+  <line x1="20" y1="16.5" x2="20" y2="8"   stroke="#00dc82" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="22.8" y1="21.5" x2="30" y2="26" stroke="#00dc82" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="17.2" y1="21.5" x2="10" y2="26" stroke="#00dc82" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Outer nodes -->
+  <circle cx="20"  cy="7"  r="2.2" fill="#00dc82"/>
+  <circle cx="31"  cy="27" r="2.2" fill="#00dc82"/>
+  <circle cx="9"   cy="27" r="2.2" fill="#00dc82"/>
+  <!-- Center node -->
+  <circle cx="20" cy="20" r="3.5" fill="#00dc82"/>
+  <circle cx="20" cy="20" r="2"   fill="#0a0c10"/>
+  <circle cx="20" cy="20" r="1"   fill="#00dc82"/>
+</svg>
