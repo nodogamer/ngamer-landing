@@ -1,45 +1,55 @@
 'use client'
 
 import { useState } from 'react'
+import CheckoutModal from './CheckoutModal'
 
 const plans = [
   {
+    id: 'bloque-de-tierra',
     name: 'Bloque de Tierra',
     tagline: 'Ideal para empezar con amigos',
     monthly: '$5.000',
     annual: '$50.000',
     features: ['Hasta 10 jugadores', '2 GB de RAM', 'Panel de control AMP', 'Protección DDoS básica', 'Soporte por WhatsApp', 'Backups automáticos'],
     boldIndex: [0, 1],
-    cta: 'https://wa.me/5491111111111?text=MINECRAFTSERVER%20BLOQUE%20DE%20TIERRA',
     popular: false,
   },
   {
+    id: 'diamante',
     name: 'Diamante',
     tagline: 'Para comunidades en crecimiento',
     monthly: '$10.000',
     annual: '$100.000',
     features: ['Hasta 25 jugadores', '4 GB de RAM', 'Panel de control AMP', 'Soporte para mods y plugins', 'Protección DDoS avanzada', 'Soporte por WhatsApp', 'Backups automáticos'],
     boldIndex: [0, 1],
-    cta: 'https://wa.me/5491111111111?text=MINECRAFTSERVER%20DIAMANTE',
     popular: true,
   },
   {
+    id: 'netherita',
     name: 'Netherita',
     tagline: 'Máximo poder para tu network',
     monthly: '$20.000',
     annual: '$200.000',
     features: ['50+ jugadores', '8 GB de RAM', 'Panel de control AMP', 'Soporte para mods y plugins', 'Protección DDoS avanzada', 'Soporte prioritario 24/7', 'Backups automáticos', 'IP dedicada (opcional)'],
     boldIndex: [0, 1],
-    cta: 'https://wa.me/5491111111111?text=MINECRAFTSERVER%20NETHERITA',
     popular: false,
   },
 ]
 
 export default function BillingToggle() {
   const [annual, setAnnual] = useState(false)
+  const [selected, setSelected] = useState<{ id: string; name: string } | null>(null)
 
   return (
     <>
+      {selected && (
+        <CheckoutModal
+          plan={selected.id}
+          label={selected.name}
+          onClose={() => setSelected(null)}
+        />
+      )}
+
       <div className="billing-toggle reveal">
         <button className={`toggle-btn ${!annual ? 'active' : ''}`} onClick={() => setAnnual(false)}>
           Mensual
@@ -69,14 +79,12 @@ export default function BillingToggle() {
                 </li>
               ))}
             </ul>
-            <a
+            <button
               className={`btn btn-full ${plan.popular ? 'btn-primary' : 'btn-outline'}`}
-              href={plan.cta}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => setSelected({ id: plan.id, name: plan.name })}
             >
               Elegir plan
-            </a>
+            </button>
           </div>
         ))}
       </div>
