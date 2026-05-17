@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface Props {
-  plan: string
+  plan: number
   label: string
   onClose: () => void
 }

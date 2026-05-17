@@ -3,7 +3,30 @@ import Navbar from '@/components/Navbar'
 import BillingToggle from '@/components/BillingToggle'
 import ScrollReveal from '@/components/ScrollReveal'
 
-export default function Home() {
+interface Plan {
+  id: number
+  label: string
+  amount: number
+  amount_annual: number | null
+  tagline: string
+  features: string[]
+  popular: boolean
+}
+
+async function getPlans(): Promise<Plan[]> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/plans`, {
+      next: { revalidate: 60 },
+    })
+    if (!res.ok) return []
+    return res.json()
+  } catch {
+    return []
+  }
+}
+
+export default async function Home() {
+  const plans = await getPlans()
   return (
     <>
       <ScrollReveal />
@@ -93,7 +116,7 @@ export default function Home() {
             <h2 className="section-title">Nuestros Planes</h2>
             <p className="section-subtitle">Elegí el que se ajusta a tu comunidad</p>
           </div>
-          <BillingToggle />
+          <BillingToggle plans={plans} />
         </div>
       </section>
 
