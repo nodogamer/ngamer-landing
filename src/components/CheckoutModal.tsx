@@ -5,10 +5,11 @@ import { useState } from 'react'
 interface Props {
   plan: number
   label: string
+  annual: boolean
   onClose: () => void
 }
 
-export default function CheckoutModal({ plan, label, onClose }: Props) {
+export default function CheckoutModal({ plan, label, annual, onClose }: Props) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -22,7 +23,7 @@ export default function CheckoutModal({ plan, label, onClose }: Props) {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/create-preference`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, plan }),
+        body: JSON.stringify({ email, plan, annual }),
       })
 
       const data = await res.json()

@@ -19,7 +19,7 @@ function formatARS(amount: number) {
 
 export default function BillingToggle({ plans }: { plans: Plan[] }) {
   const [annual, setAnnual] = useState(false)
-  const [selected, setSelected] = useState<{ id: number; name: string } | null>(null)
+  const [selected, setSelected] = useState<{ id: number; name: string; annual: boolean } | null>(null)
 
   return (
     <>
@@ -27,6 +27,7 @@ export default function BillingToggle({ plans }: { plans: Plan[] }) {
         <CheckoutModal
           plan={selected.id}
           label={selected.name}
+          annual={selected.annual}
           onClose={() => setSelected(null)}
         />
       )}
@@ -64,7 +65,7 @@ export default function BillingToggle({ plans }: { plans: Plan[] }) {
             </ul>
             <button
               className={`btn btn-full ${plan.popular ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => setSelected({ id: plan.id, name: plan.label })}
+              onClick={() => setSelected({ id: plan.id, name: plan.label, annual })}
             >
               Elegir plan
             </button>
