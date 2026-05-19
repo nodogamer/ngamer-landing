@@ -43,7 +43,13 @@ function LoginContent() {
         router.refresh()
       }
     } else {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        },
+      })
       if (error) {
         setError(error.message)
         setLoading(false)
