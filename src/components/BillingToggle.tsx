@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import CheckoutModal from './CheckoutModal'
+import { createClient } from '@/lib/supabase/client'
 
 interface Plan {
   id: number
@@ -20,6 +22,17 @@ function formatARS(amount: number) {
 export default function BillingToggle({ plans }: { plans: Plan[] }) {
   const [annual, setAnnual] = useState(false)
   const [selected, setSelected] = useState<{ id: number; name: string; annual: boolean } | null>(null)
+  const router = useRouter()
+  const supabase = createClient()
+
+  const handleSelectPlan = async (id: number, name: string, isAnnual: boolean) => {
+    const { data } = await supabase.auth.getUser()
+    if (!data.user) {
+      router.push(`/login?next=${encodeURIComponent('/#planes')}`)
+      return
+    }
+    setSelected({ id, name, annual: isAnnual })
+  }
 
   return (
     <>
@@ -65,7 +78,7 @@ export default function BillingToggle({ plans }: { plans: Plan[] }) {
             </ul>
             <button
               className={`btn btn-full ${plan.popular ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => setSelected({ id: plan.id, name: plan.label, annual })}
+              onClick={() => handleSelectPlan(plan.id, plan.label, annual)}
             >
               Elegir plan
             </button>

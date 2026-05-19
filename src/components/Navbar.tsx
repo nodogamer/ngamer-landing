@@ -1,12 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+  const supabase = createClient()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -14,7 +22,31 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   const closeMenu = () => setMenuOpen(false)
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setUserMenuOpen(false)
+    router.refresh()
+  }
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -45,6 +77,31 @@ export default function Navbar() {
           >
             Contactanos
           </a>
+
+          {user ? (
+            <div className="navbar-user" ref={userMenuRef}>
+              <button
+                className="navbar-user-btn"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                aria-expanded={userMenuOpen}
+              >
+                <span className="navbar-user-avatar">{user.email?.[0].toUpperCase()}</span>
+                <span className="navbar-user-chevron">{userMenuOpen ? '▴' : '▾'}</span>
+              </button>
+              {userMenuOpen && (
+                <div className="navbar-user-menu">
+                  <span className="navbar-user-email">{user.email}</span>
+                  <button className="navbar-user-item" onClick={handleSignOut}>
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link className="navbar-item navbar-login" href="/login" onClick={closeMenu}>
+              Ingresar
+            </Link>
+          )}
         </div>
       </div>
     </nav>
