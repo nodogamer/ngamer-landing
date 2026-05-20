@@ -10,6 +10,7 @@ interface Order {
   amount_ars: number
   status: string
   created_at: string | null
+  mp_init_point: string | null
   plans: { label: string } | null
 }
 
@@ -100,7 +101,19 @@ export default function MisPedidosPage() {
                     {STATUS_LABEL[order.status] ?? order.status}
                   </span>
                 </div>
-                <div className="order-id">#{order.id.slice(0, 8).toUpperCase()}</div>
+                <div className="order-footer">
+                  <span className="order-id">#{order.id.slice(0, 8).toUpperCase()}</span>
+                  {order.mp_init_point && ['pending', 'in_process'].includes(order.status) && (
+                    <a
+                      href={order.mp_init_point}
+                      className="btn btn-outline order-retry-btn"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Retomar pago
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>

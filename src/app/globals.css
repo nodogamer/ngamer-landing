@@ -1165,11 +1165,22 @@ ul { list-style: none; }
   color: var(--color-muted);
 }
 
+.order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+}
+
 .order-id {
   font-size: 0.78rem;
   color: var(--color-muted);
-  margin-top: 0.75rem;
   font-family: monospace;
+}
+
+.order-retry-btn {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.9rem;
 }
 
 .order-status {
