@@ -19,6 +19,7 @@ function LoginContent() {
   const supabase = createClient()
 
   const handleGoogle = async () => {
+    sessionStorage.setItem('ng_session', '1')
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -39,6 +40,7 @@ function LoginContent() {
         setError('Email o contraseña incorrectos.')
         setLoading(false)
       } else {
+        sessionStorage.setItem('ng_session', '1')
         router.push(next)
         router.refresh()
       }
