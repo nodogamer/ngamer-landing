@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Exo_2, Rajdhani } from 'next/font/google'
+import SessionGuard from '@/components/SessionGuard'
 import './globals.css'
 
 const exo2 = Exo_2({
@@ -23,7 +24,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${exo2.variable} ${rajdhani.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SessionGuard>{children}</SessionGuard>
+      </body>
     </html>
   )
 }
