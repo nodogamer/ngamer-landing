@@ -91,6 +91,9 @@ export default function Navbar() {
               {userMenuOpen && (
                 <div className="navbar-user-menu">
                   <span className="navbar-user-email">{user.email}</span>
+                  <Link href="/mis-pedidos" className="navbar-user-item" onClick={() => setUserMenuOpen(false)}>
+                    Mis pedidos
+                  </Link>
                   <button className="navbar-user-item" onClick={handleSignOut}>
                     Cerrar sesión
                   </button>
